@@ -1,0 +1,204 @@
+<!doctype html><html><head> 
+  <title>Guess the Cards</title> 
+  <link rel="stylesheet" href="index.css"> 
+ <style type="text/css" id="dcoder_stylesheet">*{
+    margin:0px;
+    padding:0px;
+    font-family: 'Ariel black';
+    background-color: lightpink;
+}
+
+.container{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width:80%;
+    margin-left: 10%;
+}
+
+.padd{
+    padding:20px;
+}
+
+.header{
+    height:50px;
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    color: Black;
+}
+
+.cards{
+    width:100%;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.card{
+    height:200px;
+    width:18%;
+    margin-top: 20px;
+    background-color: LightYellow;
+    background-size:cover;
+}
+
+.overlay{
+    height:200px;
+    width:100%;
+    background-color: gray;
+}
+
+.opened{
+    display:none;
+}</style></head> 
+ <body> 
+  <div class="container"> 
+   <div class="padd"> 
+    <div class="header"> 
+     <h1>Guess The Card</h1> 
+     <h1>Score:<span id="score"> 0</span></h1> 
+    </div> 
+    <div class="cards" id="cards"> 
+    </div> 
+   </div> 
+  </div> 
+  <script src="index.js">
+
+        </script> 
+ 
+<script type="text/javascript" id="dcoder_script">let cards = [
+   
+   
+    {
+      
+      //Rabit 
+     
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw58XPnyboJ46Qus1A6Ugbvd2mWxeVWwZA6A&usqp=CAU", 
+        value: 1,
+        status: "closed"
+        
+    },
+    
+    { //Rabit
+     
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw58XPnyboJ46Qus1A6Ugbvd2mWxeVWwZA6A&usqp=CAU",
+        value: 1,
+        status: "closed"
+    },
+    
+    {  //Dog
+
+
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTrRPgNuGh9IDiGz9cT808LZj4tuLb_nxxow&usqp=CAU",
+        value: 2,
+        status: "closed"
+    },
+    
+    {  //Dog
+
+
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTrRPgNuGh9IDiGz9cT808LZj4tuLb_nxxow&usqp=CAU",
+        value: 2,
+        status: "closed"
+    },
+    
+   {
+     //Cat
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6lPvdg_CzgmrHwnPr9hMl1CkQyRfcDIOzWw&usqp=CAU",value: 3,
+        status: "closed"
+    },
+    
+    {
+     //Cat
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6lPvdg_CzgmrHwnPr9hMl1CkQyRfcDIOzWw&usqp=CAU",value: 3,
+        status: "closed"
+    },
+    
+    
+     
+ 
+    
+    {
+      //Panda
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRQELmkkBn6c323yR2TmwyyO5xea7UegYi0A&usqp=CAU",
+        value: 4,
+        status: "closed"
+    },
+    
+    {
+      //Panda
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRQELmkkBn6c323yR2TmwyyO5xea7UegYi0A&usqp=CAU",
+        value: 4,
+        status: "closed"
+     
+    },
+
+    { //Tiger
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxAQnndxfSZ5yNqHc77sVVxl_1_Q4bWipw9g&usqp=CAU", 
+        value: 5,
+        status: "closed"
+    },
+    
+     { //Tiger
+        image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxAQnndxfSZ5yNqHc77sVVxl_1_Q4bWipw9g&usqp=CAU", 
+        value: 5,
+        status: "closed"
+   
+    
+    }
+]
+
+// Durnsturn Shuffling algorithm.
+
+for (let i=cards.length-1; i>=0; i--){
+    let j = Math.floor(Math.random()*(i+1));
+    let temp = cards[i];
+    cards[i] = cards[j];
+    cards[j] = temp;
+}
+
+// console.log(cards);
+
+// Making the cards appear on the screen.
+
+displayCards = (cards) => {
+    let img_tag = "";
+
+    for (let i=0; i<cards.length; i++) {
+        img_tag += `<div class="card" style="background-image: url('${cards[i].image}')">
+                    <div class="overlay ${cards[i].status}" onclick="open_cards(${i});"></div>
+                    </div>\n`
+    }
+    document.getElementById("cards").innerHTML = img_tag;
+}
+
+displayCards(cards);
+
+// Game Logic
+
+let flag=0, val1=null, val2=null, score = 0;
+
+open_cards = (index) => {
+    cards[index].status = "opened";
+    // card[index];
+    displayCards(cards);
+    if (flag === 0){
+        val1 = cards[index].value;
+        flag = 1;
+    } else if (flag === 1){
+        val2 = cards[index].value;
+    
+        if (val1 === val2){
+            score++;
+            document.getElementById("score").innerText = score;
+            // alert("You WIN!!");
+            val1 = val2 = null;
+            flag = 0;
+        } else {
+            alert("Game Over! Better Luck next time!");
+            location.reload();
+        }
+        
+        }
+        
+        }</script></body></html>
